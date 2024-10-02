@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httprate"
 	"github.com/go-chi/cors"
 )
 
@@ -24,7 +26,7 @@ var urlStore = make(map[string]string) // In-memory store for shortened URLs
 
 func main() {
 	r := chi.NewRouter()
-
+	r.Use(middleware.Logger)
 	// Basic CORS
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
@@ -34,6 +36,8 @@ func main() {
 		AllowCredentials: false,
 		MaxAge:           300,
 	}))
+
+	r.Use(httprate.LimitByIP(20, time.Minute))
 
 	r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("oh no! wrong route!!"))
