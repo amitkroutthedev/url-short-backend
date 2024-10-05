@@ -17,7 +17,7 @@ A REST-API application in golang, that provide allows users to shorten long URLs
 
 #### Get item
 
- - Get the result in `{URL}/shorten/{shortkey}`
+ - Get the redirected URL in `{URL}/shorten/{shortkey}`
 
 
 ## Deployment
